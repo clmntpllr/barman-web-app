@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Launching backup of server {{ server }}</h2>
+<p>Please wait during the creation of the backup.</p>
+<div class="btn-group" role="group" aria-label="Choix">
+    <a href="{{ url_for('barman_launch_backup',server=server) }}" class="btn btn-secondary" role="button">Validate</a>
+    <a href="{{ url_for('barman_listbackup_server',server=server) }}" class="btn btn-secondary" role="button">Cancel</a>
+</div>
+{% endblock %}

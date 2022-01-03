@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{% for info,tabinfo in tab.items() %}
+    {% for element in tabinfo %}
+    <h3>{{ element }}</h3>
+    {% endfor %}
+{% endfor %}
+<a href="{{ url_for('barman_listbackup_server', server=server) }}">{%trans%}Backups{%endtrans%} {{ server }}</a>
+{% endblock %}

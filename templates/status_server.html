@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+{% for key,value in tab.items() %}
+<h2>Status du serveur {{ key }}</h2>
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col"> Name </th> 
+        <th scope="col"> Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it_key,it_value in value.items() %}
+    <tr>
+        <th scope="row">{{ it_value['description'] }}</th> 
+        <td>{{ it_value['message'] }}</td> 
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+{% endblock %}

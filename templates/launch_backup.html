@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Backup of server : {{ server }}</h2>
+<table class="table table-sm" >
+{% if tab['_INFO'] %}
+    {% for element,value in tab.items() %}
+    <tr><td>{{ element }}</td><td>{{value}}</td></tr>
+    {% endfor %}
+{% else %}
+    {% for element,value in tab.items() %}
+    <tr class="table-danger"><td>{{ element }}</td><td>{{value}}</td></tr>
+    {% endfor %}
+{% endif %}
+</table>
+<a href="{{ url_for('barman_listbackup_server', server=server) }}">List {{ server }} backups.</a>
+{% endblock %}

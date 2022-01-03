@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+{% for server,backup in tab.items() %}
+<h2>Backup {{backup['backup_id']}} of server {{ server }}</h2>
+<table class="table table-sm" >
+{% if backup['status'] == "DONE" %}
+<tr><td>Status            </td><td>{{backup['status']}}</td></tr>
+<tr><td>PostgreSQL Version</td><td>{{backup['postgresql_version']}}</td></tr>
+<tr><td>PGDATA directory  </td><td>{{backup['pgdata_directory']}}</td></tr>
+<tr><td colspan="2"><h3>Base backup information</h3></td></tr>
+<tr><td>Disk usage           </td><td>{{backup['base_backup_information']['disk_usage']}}</td></tr>
+<tr><td>Incremental size     </td><td>{{backup['base_backup_information']['incremental_size']}}</td></tr>
+<tr><td>Timeline             </td><td>{{backup['base_backup_information']['timeline']}}</td></tr>
+<tr><td>Begin WAL            </td><td>{{backup['base_backup_information']['begin_wal']}}</td></tr>
+<tr><td>End WAL              </td><td>{{backup['base_backup_information']['end_wal']}}</td></tr>
+<tr><td>WAL number           </td><td>{{backup['base_backup_information']['number_of_workers']}}</td></tr>
+<tr><td>WAL compression ratio</td><td>{{backup['base_backup_information']['wal_compression_ratio']}}</td></tr>
+<tr><td>Begin time           </td><td>{{backup['base_backup_information']['begin_time']}}</td></tr>
+<tr><td>End time             </td><td>{{backup['base_backup_information']['end_time']}}</td></tr>
+<tr><td>Copy time            </td><td>{{backup['base_backup_information']['copy_time']}}</td></tr>
+<tr><td>Estimated throughput </td><td>{{backup['base_backup_information']['throughput']}}</td></tr>
+<tr><td>Begin Offset         </td><td>{{backup['base_backup_information']['begin_offset']}}</td></tr>
+<tr><td>End Offset           </td><td>{{backup['base_backup_information']['end_offset']}}</td></tr>
+<tr><td>Begin LSN            </td><td>{{backup['base_backup_information']['begin_lsn']}}</td></tr>
+<tr><td>End LSN              </td><td>{{backup['base_backup_information']['end_lsn']}}</td></tr>
+<tr><td colspan="2"><h3>WAL information:</h3></td></tr>
+<tr><td>No of files          </td><td>{{backup['wal_information']['no_of_files']}}</td></tr>
+<tr><td>Disk usage           </td><td>{{backup['wal_information']['disk_usage']}}</td></tr>
+<tr><td>WAL rate             </td><td>{{backup['wal_information']['wal_rate']}}</td></tr>
+<tr><td>Compression ratio    </td><td>{{backup['wal_information']['compression_ratio']}}</td></tr>
+<tr><td>Last available       </td><td>{{backup['wal_information']['last_available']}}</td></tr>
+<tr><td colspan="2"><h3>Catalog information:</h3></td></tr>
+<tr><td>Retention Policy     </td><td>{{backup['catalog_information']['retention_policy']}}</td></tr>
+<tr><td>Previous Backup      </td><td>{{backup['catalog_information']['previous_backup']}}</td></tr>
+<tr><td>Next Backup          </td><td>{{backup['catalog_information']['next_backup']}}</td></tr>
+{% elif backup['status'] == "FAILED" %}
+<tr class="table-danger"><td>Status            </td><td>{{backup['status']}}</td></tr>
+<tr class="table-danger"><td>Error             </td><td>{{backup['error']}}</td></tr>
+<tr><td colspan="2"><a href="{{ url_for('barman_delete_backup', server=server, backupid=backup['backup_id']) }}">{%trans%}Delete Backup{%endtrans%}</a></td></tr>
+{% endif %}
+</table>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% from "_menu_server.html" import gen_menu with context %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>{{ user_manager.USER_APP_NAME }}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" >
+
+    <!-- Favicons -->
+    <link rel="icon" href="/static/favicon.ico">
+    <meta name="theme-color" content="#563d7c">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+  </head>
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/"><img src="/static/img/coffee.svg" width="36" height="36">{{ user_manager.USER_APP_NAME }}</a>
+  <ul class="navbar-nav px-3 list-group-horizontal">
+    {% if call_or_get(current_user.is_authenticated) %}    
+    <li class="nav-item text-nowrap"><a class="nav-link" href="{{ url_for('user.edit_user_profile') }}">{{ current_user.username or current_user.email }}</a></li>
+    <li class="nav-item text-nowrap"><a class="nav-link" href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a></li>
+    {% else %}
+    <li class="nav-item text-nowrap"><a class="nav-link" href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<div class="container-fluid page-content">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"><span>All Servers</span></h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('barman_list_servers') }}"><span data-feather="file-text">List All Servers</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('barman_check_server', server='all') }}"><span data-feather="file-text">Check All Servers</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('barman_listbackup_server', server='all') }}"><span data-feather="file-text">List All Servers Backups</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('refresh_list') }}"><span data-feather="file-text">Refresh List</span></a></li>
+            </ul>
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"><span>Servers</span></h6>
+            {{ gen_menu(tab_menu) }}
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+    <script src="/static/js/popper.min.js" ></script>
+    <script src="/static/js/jquery-3.5.1.min.js" ></script>
+    <script src="/static/js/bootstrap.min.js" ></script>
+</body>
+</html>

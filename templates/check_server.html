@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% for key,value in tab.items() %}
+<h2>Check of server : {{ key }}</h2>
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col"> Name </th> 
+        <th scope="col"> Status </th>
+        <th scope="col"> Hint </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it_key,it_value in value.items() %}
+    {% if it_value['status'] == "KO" or it_value['status'] == "FAILED" %}<tr class="table-danger">{% else %}<tr>{% endif %}
+        <th scope="row">{{ it_key }}</th> 
+        <td>{{ it_value['status'] }}</td> 
+        <td>{{ it_value['hint'] }}</td> 
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+{% endblock %}

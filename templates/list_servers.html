@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>List of servers</h2>
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col"> Name </th> 
+        <th scope="col"> Description </th>
+        <th scope="col"> Status </th>
+        <th scope="col"> Check </th>
+        <th scope="col"> List Backup </th>
+        <th scope="col"> Show Server </th>
+    </tr>
+  </thead>
+  <tbody>
+{% for key,value in tab.items() %}
+    <tr>
+        <th scope="row">{{ key }}</th> 
+		<td>{{ value['description'] }}</td> 
+		<td><a href="{{ url_for('barman_status_server', server=key) }}">{%trans%}Status{%endtrans%}</a></td> 
+		<td><a href="{{ url_for('barman_check_server', server=key) }}">{%trans%}Check{%endtrans%}</a></td> 
+		<td><a href="{{ url_for('barman_listbackup_server', server=key) }}">{%trans%}Backups{%endtrans%}</a></td> 
+		<td><a href="{{ url_for('barman_show_server', server=key) }}">{%trans%}Show{%endtrans%}</a></td> 
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

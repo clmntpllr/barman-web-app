@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+{% for key,tablistbackup in tab.items() %}
+<h2>Backups of server {{ key }}</h2>
+<table class="table table-sm table-striped">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col"> Backup ID </th> 
+        <th scope="col"> End Time </th>
+        <th scope="col"> Status </th>
+        <th scope="col"> Size </th>
+        <th scope="col"> WAL Size </th>
+        <th scope="col"> Show Details </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for backup in tablistbackup %}
+        {% if backup['status'] != "DONE" %}<tr class="table-danger">{% elif backup['backup_id'].startswith(datejour) %}<tr class="table-success">{% else %}<tr>{% endif %}
+            <th scope="row">{{ backup['backup_id'] }}</th> 
+            <td>{{ backup['end_time'] }}</td> 
+            <td>{{ backup['status'] }}</td> 
+            <td>{{ backup['size'] }}</td> 
+            <td>{{ backup['wal_size'] }}</td> 
+            <td><a href="{{ url_for('barman_show_backup', server=key ,backupid=backup['backup_id']) }}">{%trans%}Show{%endtrans%}</a>
+                {% if backup['status'] == "FAILED" %} / <a href="{{ url_for('barman_delete_backup', server=key ,backupid=backup['backup_id']) }}">{%trans%}Delete{%endtrans%}</a>{% endif %} </td> 
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><a href="{{ url_for('barman_prelaunch_backup', server=key) }}">Launch a backup of {{ key }}</a></p>
+{% endfor %}
+{% endblock %}
