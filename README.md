@@ -19,7 +19,7 @@ git clone https://github.com/clmntpllr/barman-web-app.git
 ```shell
 cd barman-web-app
 python -m pip install pip --upgrade
-pythom -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 - config the app by editing config.py to suits your needs
 - to generate a new secret key :
