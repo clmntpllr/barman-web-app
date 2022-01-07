@@ -1,4 +1,5 @@
 import json, datetime, subprocess
+import random, string
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
@@ -74,7 +75,9 @@ def create_app():
         return result
 
     def get_servers_list():
+        global tab_menu
         result_status = run_barman_command("list-server")
+        tab_menu = result_status
         return result_status
 
     # Get the server list at init
@@ -84,6 +87,8 @@ def create_app():
     @app.route('/')
     @login_required
     def home_page():
+        global tab_menu
+        tab_menu = tab_menu
         return render_template("index_template.html", tab_menu=tab_menu)
 
     # Refresh Server List

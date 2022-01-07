@@ -10,7 +10,6 @@
 <h2>Home page</h2>
 {% if call_or_get(current_user.is_authenticated) %}
 <p><a href="{{ url_for('barman_list_servers') }}">{%trans%}List Servers{%endtrans%}</a></p>
-{{ tab }}
 {% else %}
 <p><a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a></p>
 {% endif %}
