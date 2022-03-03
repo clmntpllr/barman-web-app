@@ -76,22 +76,16 @@ def create_app():
         result = json.loads(subprocess.run(list((command_barman)),stdout=subprocess.PIPE).stdout.decode("utf-8"))
         return result
 
-    @cache.cached(timeout=180, key_prefix='server_list')
+    @cache.cached(key_prefix='server_list')
     def get_servers_list():
         global tab_menu
-        result_status = run_barman_command("list-server")
-        tab_menu = result_status
-        return result_status
-
-    # Get the server list at init
-    #tab_menu = get_servers_list()
+        tab_menu = run_barman_command("list-server")
+        return tab_menu
 
     # Home Page
     @app.route('/')
     @login_required
     def home_page():
-        #global tab_menu
-        #tab_menu = tab_menu
         tab_menu = get_servers_list()
         return render_template("index_template.html", tab_menu=tab_menu)
 
@@ -100,8 +94,6 @@ def create_app():
     @roles_required('SuperAdmin')
     def refresh_list():
         cache.clear()
-        global tab_menu 
-        tab_menu = get_servers_list()
         return redirect(url_for('home_page'))
 
     # List Servers
