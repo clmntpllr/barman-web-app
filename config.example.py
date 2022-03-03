@@ -15,7 +15,11 @@ USER_REQUIRE_RETYPE_PASSWORD = False  # Simplify register form
 USER_ENABLE_REGISTER = False          # No register possible
 USER_COPYRIGHT_YEAR = "2021"
 USER_CORPORATION_NAME = "Clément Paillier"
-USER_APP_VERSION = "1.1"
+USER_APP_VERSION = "1.2"
+
+#Flask-Caching config
+CACHE_TYPE: "SimpleCache"  # Flask-Caching related configs
+CACHE_DEFAULT_TIMEOUT: 300
 
 # App config
 APP_CONF_ADMIN_USERNAME = "admin"

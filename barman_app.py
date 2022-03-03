@@ -3,12 +3,14 @@ import random, string
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
+from flask_caching import Cache
 
 """ Flask application factory """
 def create_app():
     # Create Flask app load app.config
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
+    cache = Cache(app)
 
     # Initialize Flask-SQLAlchemy
     db = SQLAlchemy(app)
@@ -74,6 +76,7 @@ def create_app():
         result = json.loads(subprocess.run(list((command_barman)),stdout=subprocess.PIPE).stdout.decode("utf-8"))
         return result
 
+    @cache.cached(timeout=180, key_prefix='server_list')
     def get_servers_list():
         global tab_menu
         result_status = run_barman_command("list-server")
@@ -81,20 +84,22 @@ def create_app():
         return result_status
 
     # Get the server list at init
-    tab_menu = get_servers_list()
+    #tab_menu = get_servers_list()
 
     # Home Page
     @app.route('/')
     @login_required
     def home_page():
-        global tab_menu
-        tab_menu = tab_menu
+        #global tab_menu
+        #tab_menu = tab_menu
+        tab_menu = get_servers_list()
         return render_template("index_template.html", tab_menu=tab_menu)
 
     # Refresh Server List
     @app.route('/refreshlist')
     @roles_required('SuperAdmin')
     def refresh_list():
+        cache.clear()
         global tab_menu 
         tab_menu = get_servers_list()
         return redirect(url_for('home_page'))
