@@ -18,8 +18,8 @@ USER_CORPORATION_NAME = "Clément Paillier"
 USER_APP_VERSION = "1.2"
 
 #Flask-Caching config
-CACHE_TYPE: "SimpleCache"  # Flask-Caching related configs
-CACHE_DEFAULT_TIMEOUT: 300
+CACHE_TYPE = "SimpleCache"  # Flask-Caching related configs
+CACHE_DEFAULT_TIMEOUT = 300
 
 # App config
 APP_CONF_ADMIN_USERNAME = "admin"
